@@ -1,5 +1,9 @@
+import { requestLogger, overrideConsoleLogger } from "./logger";
 import express from "express";
 import dotenv from "dotenv";
+import { router } from "./routes";
+
+overrideConsoleLogger();
 
 dotenv.config();
 
@@ -7,13 +11,9 @@ const port = Number(process.env.PORT || 5001);
 
 const app = express();
 
-app.get("/health", (req, res) => {
-  res.send({ redisStatus: "Connected" });
-});
+app.use(requestLogger);
 
-app.get("/", (req, res) => {
-  res.send({ message: "Hello world" });
-});
+app.use(router);
 
 app.listen(port, (err) => {
   if (err) {
