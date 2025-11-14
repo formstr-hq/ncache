@@ -13,7 +13,10 @@ export const decoder = async (
     let eventDetails: Event | null = null;
     let decyptedContent: unknown | null = null;
     if (decodedData.type === "naddr") {
-      eventDetails = await resolveNAdder(decodedData.data);
+      eventDetails = await resolveNAdder({
+        naddr: decodedData.data,
+        encodedNAddr: req.params.identifier,
+      });
     }
     if (req.query.viewKey && eventDetails) {
       decyptedContent = decryptEventFromViewKey(

@@ -1,9 +1,13 @@
 import { Event, SimplePool } from "nostr-tools";
 import { DecodedNaddr } from "nostr-tools/lib/types/nip19";
+import { wrapWithCache } from "./cache";
 
-export const resolveNAdder = async (
-  naddr: DecodedNaddr["data"]
-): Promise<Event | null> => {
+const _resolveNAdder = async ({
+  naddr,
+}: {
+  naddr: DecodedNaddr["data"];
+  encodedNAddr: string;
+}): Promise<Event | null> => {
   if (!naddr.relays) {
     return null;
   }
@@ -19,7 +23,7 @@ export const resolveNAdder = async (
     authors: [formIdPubkey],
     "#d": [identifier],
   };
-  console.log(`fetching event with filter`, filter);
+  console.log(`fetching event with filter`, JSON.stringify(filter));
   return new Promise((resolve) => {
     const subCloser = pool.subscribeMany(relayList, filter, {
       onevent: (event: Event) => {
@@ -33,3 +37,8 @@ export const resolveNAdder = async (
     }, 10000);
   });
 };
+
+export const resolveNAdder = wrapWithCache(
+  _resolveNAdder,
+  ({ encodedNAddr }) => encodedNAddr
+);

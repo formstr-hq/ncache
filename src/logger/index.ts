@@ -5,7 +5,7 @@ import { createLogger, format, transports } from "winston";
 import morgan from "morgan";
 
 export const requestLogger = morgan(
-  `:remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length] ":referrer" ":user-agent" ":response-time ms"`
+  `:remote-addr - :remote-user [:date[clf]] ":method HTTP/:http-version" :status :res[content-length] ":referrer" ":user-agent" ":response-time ms"`
 );
 
 // Ensure logs/ directory exists
@@ -23,14 +23,7 @@ const logger = createLogger({
       return `[${timestamp}] ${level.toUpperCase()}: ${message}`;
     })
   ),
-  transports: [
-    new transports.Console(),
-    new transports.File({
-      filename: path.join(logDir, "error.log"),
-      level: "error",
-    }),
-    new transports.File({ filename: path.join(logDir, "combined.log") }),
-  ],
+  transports: [new transports.Console()],
 });
 
 export const overrideConsoleLogger = () => {
