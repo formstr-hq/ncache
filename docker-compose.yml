@@ -2,6 +2,8 @@ services:
   ncache:
     build: .
     container_name: ncache
+    ports:
+      - ${APPLICATION_PORT}:${APPLICATION_PORT}
     env_file:
       - .env
     restart: always
