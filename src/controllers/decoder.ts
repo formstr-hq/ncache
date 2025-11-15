@@ -11,7 +11,7 @@ export const decoder = async (
   try {
     const decodedData = nip19.decode(req.params.identifier);
     let eventDetails: Event | null = null;
-    let decyptedContent: unknown | null = null;
+    let decryptedContent: unknown | null = null;
     if (decodedData.type === "naddr") {
       eventDetails = await resolveNAdder({
         naddr: decodedData.data,
@@ -19,12 +19,12 @@ export const decoder = async (
       });
     }
     if (req.query.viewKey && eventDetails) {
-      decyptedContent = decryptEventFromViewKey(
+      decryptedContent = decryptEventFromViewKey(
         eventDetails,
         req.query.viewKey
       );
     }
-    return res.send({ decoded: decodedData, eventDetails, decyptedContent });
+    return res.send({ decoded: decodedData, eventDetails, decryptedContent });
   } catch (e) {
     next(e);
   }

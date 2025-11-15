@@ -1,9 +1,7 @@
 services:
-  backend:
+  ncache:
     build: .
     container_name: ncache
-    ports:
-      - "${APPLICATION_PORT}:${APPLICATION_PORT}"
     env_file:
       - .env
     restart: always
@@ -11,3 +9,9 @@ services:
       resources:
         limits:
           memory: "200M"
+    networks:
+      - formstr
+
+networks:
+  formstr:
+    external: true
