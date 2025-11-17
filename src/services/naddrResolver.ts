@@ -2,6 +2,8 @@ import { Event, SimplePool } from "nostr-tools";
 import { DecodedNaddr } from "nostr-tools/lib/types/nip19";
 import { wrapWithCache } from "./cache";
 
+const pool = new SimplePool();
+
 const _resolveNAdder = async ({
   naddr,
 }: {
@@ -11,7 +13,7 @@ const _resolveNAdder = async ({
   if (!naddr.relays) {
     return null;
   }
-  const pool = new SimplePool();
+
   const pubKey = naddr.pubkey;
   const identifier = naddr.identifier;
   const kind = naddr.kind;
