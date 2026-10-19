@@ -7,7 +7,9 @@ overrideConsoleLogger();
 
 dotenv.config();
 
-const port = Number(process.env.PORT || 5001);
+const port = Number(
+  process.env.PORT || process.env.APPLICATION_PORT || 5001
+);
 
 const app = express();
 
